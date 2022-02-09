@@ -1,0 +1,35 @@
+os: Visual Studio 2019
+
+environment:
+  APPVEYOR_RDP_PASSWORD: N4mm13rv0nt
+  matrix:
+    - GETH_ARCH: amd64
+      MSYS2_ARCH: x86_64
+      MSYS2_BITS: 64
+nuget:
+  account_feed: true
+  project_feed: true
+
+
+build:
+  publish_nuget: true
+  
+
+before_build:
+  - nuget restore
+
+#init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+install:
+  - ps: Add-AppveyorMessage "This is a test message"
+
+
+build_script:
+  - msbuild
+  - 7z a keakobuild.zip  %APPVEYOR_BUILD_FOLDER%\keako\bin\*
+#  - ps: Start-Sleep -s 3609
+  
+artifacts:
+  - path: kaekobuild.zip
+    name: CustomKeako
